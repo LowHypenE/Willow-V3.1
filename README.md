@@ -1,12 +1,12 @@
-# Willow-V3 Proxy
+# Willow-V3 Proxy Update (V-3.1)
 
 **Updated version from WillowV2 (Willow)**
 
-Willow-V3 brings a **better webpage**, **enhanced UI**, and **advanced features**. More updates and features are planned for **Willow-V4**, dropping on **December 1st**.
+Willow-V3.1 brings a **better webpage**, **enhanced UI**, and **advanced features**. More updates and features are planned for **Willow-V4**, dropping on **December 1st**.
 
 ---
 
-## New in Willow-V3
+## New in Willow-V3.1
 
 - Custom Cursor  
 - Better Branding  
@@ -17,8 +17,10 @@ Willow-V3 brings a **better webpage**, **enhanced UI**, and **advanced features*
 - No Loading Screens  
 - Transport Options  
 - Theme Change  
-- Updated UV Proxy to Titanium Network  
-
+- Updated UV Proxy to **NEWR VERSION**
+- Added battery tracker
+- Better 404 page
+- **ALMOST NO RUN TIME ISSUES (if you use bare for transport)**
 ---
 
 ## Features Coming Soon
@@ -26,7 +28,7 @@ Willow-V3 brings a **better webpage**, **enhanced UI**, and **advanced features*
 - `config.html`  
 - Search Engine Options  
 - Fewer Runtime Issues  
-- Updates to v2 UV Proxy Scramjet  
+- Updates to UV Proxy Scramjet  
 - Even Better UI  
 - More Unblocked URLs  
 - Games Section  

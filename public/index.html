@@ -13,12 +13,69 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    
+
+    <style>
+      #battery-indicator {
+        position: fixed;
+        top: 1rem;
+        right: 1rem;
+        z-index: 9999;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+        padding: 0.5rem 1rem;
+        color: #d8eefc;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.875rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      }
+      #battery-indicator.charging {
+        background: rgba(34, 197, 94, 0.15);
+        border-color: rgba(34, 197, 94, 0.3);
+      }
+      #battery-indicator.low {
+        background: rgba(239, 68, 68, 0.15);
+        border-color: rgba(239, 68, 68, 0.3);
+      }
+      .battery-icon {
+        width: 24px;
+        height: 12px;
+        border: 2px solid currentColor;
+        border-radius: 2px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        padding: 2px;
+      }
+      .battery-icon::after {
+        content: '';
+        position: absolute;
+        right: -4px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 2px;
+        height: 6px;
+        background: currentColor;
+        border-radius: 0 2px 2px 0;
+      }
+      .battery-fill {
+        height: 100%;
+        background: currentColor;
+        border-radius: 1px;
+        transition: width 0.3s ease;
+      }
+    </style>
+
     <!-- UV Proxy Scripts -->
     <script src="/uv/uv.bundle.js"></script>
     <script src="/uv/uv.config.js"></script>
     <script src="/baremux/index.js"></script>
-    
+
     <!-- Service Worker Registration -->
     <script>
       if ("serviceWorker" in navigator) {
@@ -27,10 +84,66 @@
         });
       }
     </script>
+
+    <!-- Battery Indicator Script -->
+    <script>
+      window.addEventListener('load', async () => {
+        const batteryDiv = document.createElement('div');
+        batteryDiv.id = 'battery-indicator';
+        batteryDiv.setAttribute('data-testid', 'display-battery');
+        batteryDiv.innerHTML = `
+          <div class="battery-icon" data-testid="icon-battery">
+            <div class="battery-fill" id="battery-fill" data-testid="fill-battery"></div>
+          </div>
+          <span id="battery-text" data-testid="text-battery">--</span>
+        `;
+        document.body.appendChild(batteryDiv);
+        
+        if ('getBattery' in navigator) {
+          try {
+            const battery = await navigator.getBattery();
+            const updateBattery = () => {
+              const level = Math.round(battery.level * 100);
+              const fill = document.getElementById('battery-fill');
+              const text = document.getElementById('battery-text');
+              const indicator = document.getElementById('battery-indicator');
+              if (fill && text && indicator) {
+                fill.style.width = `${level}%`;
+                text.textContent = `${level}%`;
+                indicator.classList.remove('charging', 'low');
+                if (battery.charging) {
+                  indicator.classList.add('charging');
+                  text.textContent = `${level}% Charging`;
+                } else if (level < 20) {
+                  indicator.classList.add('low');
+                }
+              }
+            };
+            updateBattery();
+            battery.addEventListener('levelchange', updateBattery);
+            battery.addEventListener('chargingchange', updateBattery);
+          } catch (err) {
+            document.getElementById('battery-text').textContent = 'N/A';
+          }
+        } else {
+          document.getElementById('battery-text').textContent = 'N/A';
+        }
+      });
+    </script>
+
     <script type="module" crossorigin src="/assets/index-a2NHF4_I.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-DJ2SUnrn.css">
   </head>
+
   <body>
     <div id="root"></div>
+
+    <!-- 🚨 Alert pop-ups for visitors -->
+    <script>
+      window.onload = function() {
+        alert("CHANGE TRANSPORT OPTION TO BARE, BELOW FOR THE PROXY NOT TO CRASH!");
+        alert("This is Willow V-3.1 semi version of unofficial Willow-V4");
+      };
+    </script>
   </body>
 </html>
